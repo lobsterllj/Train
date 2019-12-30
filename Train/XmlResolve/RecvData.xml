@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<!--actually we do not need this file,
+      adding this just for clarity.
+-->
+  <indications>
+    <datas>
+      <data>
+        <sacepid>0</sacepid>
+        <sadata></sadata>
+      </data>
+    </datas>
+  </indications>

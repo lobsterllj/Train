@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"  standalone="no"?>
+  <requests>
+    <disconnects>
+      <disconnect>
+        <sacepid>0</sacepid>
+        <reason>0</reason>
+        <subreason>0</subreason>
+      </disconnect>
+    </disconnects>
+  </requests>

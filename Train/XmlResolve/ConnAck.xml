@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"  standalone="no"?>
+<indications>
+    <connects>
+      <connect>
+        <sacepid>0</sacepid>
+        <calledidtype>1</calledidtype>
+        <calledctcsid></calledctcsid>
+        <callingidtype>2</callingidtype>
+        <callingctcsid></callingctcsid>
+      </connect>
+    </connects>
+  </indications>

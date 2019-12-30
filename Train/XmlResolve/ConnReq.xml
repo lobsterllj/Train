@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"  standalone="no"?>
+ <requests>
+    <connects>
+      <connect>
+        <idtype>2</idtype>
+        <ctcsid></ctcsid>
+      </connect>
+    </connects>
+  </requests>
