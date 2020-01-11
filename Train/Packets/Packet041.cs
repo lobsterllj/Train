@@ -82,10 +82,9 @@ namespace Train.Packets
         }
 
         //获得等级转换点距LRBG的距离
-        public int GetDLevelTr()
+        public double GetDTr()
         {
-            //直接取整，影响不大
-            return (int)(D_LEVELTR * base.GetScale(Q_SCALE));
+            return (D_LEVELTR * base.GetScale(Q_SCALE));
         }
         //返回应切换的等级
         public int GetMLevelTr()

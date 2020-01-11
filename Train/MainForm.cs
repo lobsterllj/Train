@@ -30,8 +30,6 @@ namespace Train
         public bool IsRBCConnected { get { return isRBCConnected; } }
         private volatile bool isNRBCConnected = false;
         public bool IsNRBCConnected { get { return isNRBCConnected; } }
-        private bool isVersionCompatible = true;
-        public bool IsVersionCompatible { get { return isVersionCompatible; } }
         private const int BOUNDARY_POINT = 57406;   // boundary of RBC1 and RBC2,i.e. RBC and NRBC
         Database database = new Database();
 
@@ -48,6 +46,13 @@ namespace Train
             rbSB.Checked = true;    // 一开始列车处于SB模式
             rbCTCS_2.Checked = true;
             rbDown.Checked = true;
+        }
+
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (database != null) database.Close();
+            Communication.Close();
         }
 
         private _CommType CheckRBCRegion()
@@ -78,8 +83,8 @@ namespace Train
                 m150.SetPacket0or1(TrainDynamics.GetPacket0());
                 SendMsg(m150, _CommType.RBC);
                 Communication.Disconnect(_CommType.RBC);
-                //isISDNIFConnected = false;
-                //isRBCConnected = false;
+                isISDNIFConnected = false;
+                isRBCConnected = false;
             }
             else if (sender == disNRBCToolStripMenuItem)
             {
@@ -94,12 +99,51 @@ namespace Train
             new Trains.SetLocForm(trainState.TrainLocation).Show();
         }
 
+        #region 故障注入
         private void 版本不兼容ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isVersionCompatible = ! isVersionCompatible;
-            版本不兼容ToolStripMenuItem.Checked = ! isVersionCompatible;
+            FaultInjection.IsVersionCompatible = !FaultInjection.IsVersionCompatible;
+            版本不兼容ToolStripMenuItem.Checked = ! FaultInjection.IsVersionCompatible;
         }
 
+        private void 不发送任何消息ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FaultInjection.IsNoMessageSent = !FaultInjection.IsNoMessageSent;
+            不发送任何消息ToolStripMenuItem.Checked = FaultInjection.IsNoMessageSent;
+        }
+
+        private void soM位置未知ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool newValue = !soM位置未知ToolStripMenuItem.Checked;
+            soM位置未知ToolStripMenuItem.Checked = newValue;
+            if (newValue)
+            {
+                soM位置无效ToolStripMenuItem.Checked = false; // this two option cannot be true at the same time
+                FaultInjection.QStatus = _Q_STATUS.UNKNOWN;
+            }
+            else FaultInjection.QStatus = _Q_STATUS.VALID;
+        }
+
+        private void soM位置无效ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool newValue = !soM位置无效ToolStripMenuItem.Checked;
+            soM位置无效ToolStripMenuItem.Checked = newValue;
+            if (newValue)
+            {
+                soM位置未知ToolStripMenuItem.Checked = false;
+                FaultInjection.QStatus = _Q_STATUS.INVALID;
+            }
+            else FaultInjection.QStatus = _Q_STATUS.VALID;
+        }
+
+        private void 不执行等级转换ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FaultInjection.IsNoLevelTr = !FaultInjection.IsNoLevelTr;
+            不执行等级转换ToolStripMenuItem.Checked = FaultInjection.IsNoLevelTr;
+        }
+
+
+        #endregion
         //发送一次指定消息
         private void SendMessagetTSMI_Click(object sender, EventArgs e)
         {
@@ -344,8 +388,8 @@ namespace Train
             //列车运动线程
             trainDynamicThread = new Thread(TrainDynamicFun);
             trainDynamicThread.IsBackground = true;
-            trainDynamicThread.Start();
             trainDynamicThread.Priority = ThreadPriority.Highest;
+            trainDynamicThread.Start();
             //列车界面更新线程
             updateVehicleInterfaceThread = new Thread(UpdateVehicleInterfaceFun);
             updateVehicleInterfaceThread.IsBackground = true;
@@ -477,6 +521,8 @@ namespace Train
         /// <param name="commType"></param>
         public void SendMsg(AbstractSendMessage asm,_CommType commType)
         {
+            if (FaultInjection.IsNoMessageSent) return;
+
             byte[] sendData = asm.Resolve();
             if(commType == _CommType.RBC)
             {
@@ -499,10 +545,9 @@ namespace Train
         private MessageHandler nrbcMsgHandler = new MessageHandler(_CommType.NRBC);
         public void StartRecvMsgModule(_CommType commType)
         {
-            rbcMsgHandler.Init(this);
-            nrbcMsgHandler.Init(this);
             if (commType == _CommType.NRBC && fromNRBCThread == null)
             {
+                nrbcMsgHandler.Init(this);
                 fromNRBCThread = new Thread(RecvFromNRBC);
                 fromNRBCThread.IsBackground = true;
                 fromNRBCThread.Start();
@@ -510,6 +555,7 @@ namespace Train
             
             if (commType == _CommType.RBC && fromRBCThread == null)
             {
+                rbcMsgHandler.Init(this);
                 fromRBCThread = new Thread(RecvFromRBC);
                 fromRBCThread.IsBackground = true;
                 fromRBCThread.Start();
@@ -579,7 +625,7 @@ namespace Train
                 catch (IOException ioe) { }
                 catch (Exception e)
                 {
-                    if(!(e is NullReferenceException))
+                    if (!(e is NullReferenceException))
                         DebugInfo.WriteToFile(e.ToString(), "RBCRecvEx");
                 }
             }

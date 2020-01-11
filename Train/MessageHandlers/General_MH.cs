@@ -91,22 +91,24 @@ namespace Train.MessageHandlers
             StaticSpeedLimits.TSR.Remove(p66.getNidTsr());
         }
 
-
+        private Packet131 p131;
         // RBC handover
         private void PH(Packet131 p131)
         {
-            //开启一个线程处理
-            Thread t = new Thread(new ParameterizedThreadStart(HandleHandover));
-            t.IsBackground = true;
-            t.Start(p131);
+            if(this.p131 == null)    // may receive p131 for many times.
+            {
+                this.p131 = p131;
+                //开启一个线程处理
+                Thread t = new Thread(new ParameterizedThreadStart(HandleHandover));
+                t.IsBackground = true;
+                t.Start(p131);
+            }
+            this.p131 = p131;   
         }
 
         private void HandleHandover(object obj)
         {
-            Packet131 p131 = (Packet131)obj;
-            double dis = p131.GetDrbctr();
-            TextInfo.Add("距离移交点" + dis + "米");
-            JudgeDistance(dis);
+            JudgeDistance();
             _CommType neighbor = mh.CommType == _CommType.RBC ? _CommType.NRBC : _CommType.RBC;
             TextInfo.Add("开始与" + neighbor + "建立通信");
             if (!Communication.IsConnected(neighbor))
@@ -115,6 +117,12 @@ namespace Train.MessageHandlers
                 mainForm.StartRecvMsgModule(neighbor);
             }
             mainForm.SendMsg(new Message155(), neighbor);
+            p131 = null;
+        }
+
+        protected override AbstractPacket GetPacket()
+        {
+            return p131;
         }
 
         private void PH(Packet072 p72)

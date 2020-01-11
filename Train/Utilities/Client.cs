@@ -95,7 +95,6 @@ namespace Train.Utilities
             {
                 //如果距离上次断开通信还未经过2MSL时间，则会报错：
                 //通常每个套接字地址只能使用一次，ErrorCode：10048
-                Thread.Sleep(1000); //2分钟
                 MessageBox.Show(se.Message+"\r\nErrorCode"+se.ErrorCode,
                     "错误",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Train.Messages;
+using Train.Packets;
+using Train.Utilities;
 
 namespace Train.MessageHandlers
 {
@@ -52,19 +54,37 @@ namespace Train.MessageHandlers
             return false;
         }
 
-        protected void JudgeDistance(double dis)
+        protected void JudgeDistance()
         {
-            TrainLocation trainLocation = mainForm.GetTrainState().TrainLocation;
+            dynamic dnm = GetPacket();   // p41 or p131
+            string str = (dnm is Packet041) ? "等级转换" : "RBC切换";
+            double d_tr = dnm.GetDTr();
+            double disToRun = d_tr - Trains.TrainDynamics.GetPacket0().D_LRBG;
+            TextInfo.Add("LRBG距离" + str + "点" + d_tr + "m");
+            TrainState trainState = mainForm.GetTrainState();
+            TrainLocation trainLocation = trainState.TrainLocation;
             double startLoc = trainLocation.LeftLoc;
-            const int ERROR = 1;
             while (Thread.CurrentThread.ThreadState != ThreadState.AbortRequested)
             {
+                dnm = GetPacket();   // update packet
+                if (dnm.GetDTr() != d_tr)
+                {
+                    d_tr = dnm.GetDTr();
+                    TextInfo.Add("LRBG距离"+ str +"点" + d_tr + "m");
+                    disToRun = d_tr - Trains.TrainDynamics.GetPacket0().D_LRBG;
+                    startLoc = trainLocation.LeftLoc;
+                }
                 double curLoc = trainLocation.LeftLoc;
                 double disRun = Math.Abs(curLoc - startLoc);
-                if (Math.Abs(disRun - dis) < ERROR)
+                if (disRun > disToRun)
                     break;
-                Thread.Sleep(10);
+                Thread.Sleep(50);
             }
+        }
+
+        protected virtual AbstractPacket GetPacket()
+        {
+            return null;
         }
 
     }

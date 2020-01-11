@@ -30,7 +30,6 @@ namespace Train
         static Client train_nrbc;
         #endregion
 
-      
         //读取通信配置文件
         public static void ReadIniFile(string fileName)
         {

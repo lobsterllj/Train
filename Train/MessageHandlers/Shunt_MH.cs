@@ -20,13 +20,14 @@ namespace Train.MessageHandlers
             if(msgId == 28) // acknowledge shunting mode
             {
                 if (arm.M_ACK) SendAck(arm);
+                Utilities.TextInfo.Add("收到M28，授权调车模式");
                 mainForm.BeginInvoke(new EventHandler(mainForm.rbWorkMode_CheckedChanged), _M_MODE.SH, null);
-                Message150 m150 = new Message150();
                 // mode may not be changed in time, so wait until it changed.
                 while(Trains.TrainDynamics.GetPacket0().M_MODE != (int)_M_MODE.SH)
                 {
                     Thread.Sleep(10);
                 }
+                Message150 m150 = new Message150();
                 m150.SetPacket0or1(Trains.TrainDynamics.GetPacket0());
                 SendMsg(m150);
                 return true;
@@ -34,6 +35,7 @@ namespace Train.MessageHandlers
             if(msgId == 27) // refuse shunting mode
             {
                 if (arm.M_ACK) SendAck(arm);
+                Utilities.TextInfo.Add("收到M27，拒绝调车模式");
                 return true;
             }
             return false;

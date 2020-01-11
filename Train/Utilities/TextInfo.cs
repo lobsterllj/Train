@@ -22,7 +22,7 @@ namespace Train.Utilities
         public static void Add(string msg)
         {
             TextInfo ti = new TextInfo(msg, DateTime.Now);
-            DebugInfo.WriteToFile(ti.ToString(), "TextInfo");
+            DebugInfo.WriteToFile(msg , "TextInfo");
             textInfoQueue.Push(ti);
         }
 

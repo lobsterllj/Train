@@ -54,6 +54,7 @@
     <Compile Include="Data\Balise.cs" />
     <Compile Include="Data\Database.cs" />
     <Compile Include="Data\TrainInfo.cs" />
+    <Compile Include="FaultInjection.cs" />
     <Compile Include="MessageHandlers\AbstractMessageHandler.cs" />
     <Compile Include="MessageHandlers\MessageHandler.cs" />
     <Compile Include="MessageHandlers\CommSession_MH.cs" />

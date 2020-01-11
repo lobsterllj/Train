@@ -94,7 +94,7 @@ namespace Train.MessageHandlers
         public bool CheckVersion(Message032 m32)
         {
             int sysVersion = m32.GetVersion();
-            return mainForm.IsVersionCompatible;
+            return FaultInjection.IsVersionCompatible;
         }
     }
 }

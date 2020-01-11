@@ -5,6 +5,19 @@ using Train.Utilities;
 
 namespace Train.Packets
 {
+    /// <summary>线路条件类型</summary>
+    // 7.4.1.80
+    public enum _M_TRACKCOND
+    {
+        /// <summary>隧道</summary>
+        TUNNEL = 0,
+        /// <summary>桥梁</summary>
+        BRIDGE = 1,
+        /// <summary>无电区</summary>
+        POWEROFF = 9
+    }
+
+
     /// <summary>
     /// 地到车——线路条件
     /// </summary>
@@ -61,5 +74,36 @@ namespace Train.Packets
             }
            
         }
+
+        public string GetText()
+        {
+            string text = "";
+            if (Q_TRACKINIT) return text;
+            text += GetText((_M_TRACKCOND)M_TRACKCOND_BASE, D_TRACKCOND_BASE, L_TRACKCOND_BASE);
+            for(int i = 0; i < N_ITER; i++)
+            {
+                text += "\r\n" + GetText((_M_TRACKCOND)M_TRACKCOND[i], D_TRACKCOND[i], L_TRACKCOND[i]);
+            }
+            return text;
+        }
+
+        private string GetText(_M_TRACKCOND mTrackCond,int dTrackCond, int lTrackCond)
+        {
+            string text = "" ;
+            switch (mTrackCond)
+            {
+                case _M_TRACKCOND.TUNNEL:
+                    text = "隧道"; break;
+                case _M_TRACKCOND.BRIDGE:
+                    text = "桥梁"; break;
+                case _M_TRACKCOND.POWEROFF:
+                    text = "无电区"; break;
+                default:
+                    text = "未知线路条件";break;
+            }
+            text += ",距离为"+ dTrackCond +"m,长度为" + lTrackCond +"m";
+            return text;
+        }
+
     }
 }

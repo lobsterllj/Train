@@ -6,9 +6,7 @@ using Train.Data;
 
 namespace Train
 {
-    /// <summary>
-    /// 车载设备工作模式
-    /// </summary>
+    /// <summary>车载设备工作模式</summary>
     //参考7.4.1.75 M_MODE字段取值
     public enum _M_MODE
     {
@@ -51,6 +49,20 @@ namespace Train
         REVERSE = 0,
         /// <summary>正向</summary>
         FORWARD = 1,
+        /// <summary>未知</summary>
+        UNKNOWN = 2,
+        /// <summary>未使用</summary>
+        UNUSED = 3
+    }
+
+    /// <summary>SoM位置报告状态</summary>
+    //参考7.4.1.139 Q_STATUS字段取值
+    public enum _Q_STATUS
+    {
+        /// <summary>无效</summary>
+        INVALID = 0,
+        /// <summary>有效</summary>
+        VALID = 1,
         /// <summary>未知</summary>
         UNKNOWN = 2,
         /// <summary>未使用</summary>

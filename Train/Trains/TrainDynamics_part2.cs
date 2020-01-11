@@ -212,7 +212,6 @@ namespace Train.Trains
 
         // left means train run towards left or has the tendency
         /**
-         * Q_DLRBG不清楚怎么设置，所以总是设为正向。
          * 当列车向左开时，列车朝向和运动方向都是向左；
          * 当列车向右开时，都是向右。
          * 

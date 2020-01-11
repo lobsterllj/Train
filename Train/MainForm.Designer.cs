@@ -37,6 +37,7 @@
             this.rbSL = new System.Windows.Forms.RadioButton();
             this.rbPT = new System.Windows.Forms.RadioButton();
             this.rbTR = new System.Windows.Forms.RadioButton();
+            this.rbSN = new System.Windows.Forms.RadioButton();
             this.rbIS = new System.Windows.Forms.RadioButton();
             this.rbSH = new System.Windows.Forms.RadioButton();
             this.rbFS = new System.Windows.Forms.RadioButton();
@@ -101,6 +102,9 @@
             this.列车位置设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.故障注入ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.版本不兼容ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.不发送任何消息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soM位置未知ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soM位置无效ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.发送消息ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Message129ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Message132ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,7 +141,7 @@
             this.tbPureText = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tbTextInfo = new System.Windows.Forms.TextBox();
-            this.rbSN = new System.Windows.Forms.RadioButton();
+            this.不执行等级转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbDriverConsoler.SuspendLayout();
             this.gbWorkMode.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -256,6 +260,17 @@
             this.rbTR.Text = "TR";
             this.rbTR.UseVisualStyleBackColor = true;
             this.rbTR.CheckedChanged += new System.EventHandler(this.rbWorkMode_CheckedChanged);
+            // 
+            // rbSN
+            // 
+            this.rbSN.AutoSize = true;
+            this.rbSN.Location = new System.Drawing.Point(189, 20);
+            this.rbSN.Name = "rbSN";
+            this.rbSN.Size = new System.Drawing.Size(35, 16);
+            this.rbSN.TabIndex = 0;
+            this.rbSN.Text = "SN";
+            this.rbSN.UseVisualStyleBackColor = true;
+            this.rbSN.CheckedChanged += new System.EventHandler(this.rbWorkMode_CheckedChanged);
             // 
             // rbIS
             // 
@@ -908,7 +923,11 @@
             // 故障注入ToolStripMenuItem
             // 
             this.故障注入ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.版本不兼容ToolStripMenuItem});
+            this.版本不兼容ToolStripMenuItem,
+            this.不发送任何消息ToolStripMenuItem,
+            this.soM位置未知ToolStripMenuItem,
+            this.soM位置无效ToolStripMenuItem,
+            this.不执行等级转换ToolStripMenuItem});
             this.故障注入ToolStripMenuItem.Name = "故障注入ToolStripMenuItem";
             this.故障注入ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
             this.故障注入ToolStripMenuItem.Text = "故障注入";
@@ -916,9 +935,30 @@
             // 版本不兼容ToolStripMenuItem
             // 
             this.版本不兼容ToolStripMenuItem.Name = "版本不兼容ToolStripMenuItem";
-            this.版本不兼容ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.版本不兼容ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.版本不兼容ToolStripMenuItem.Text = "版本不兼容";
             this.版本不兼容ToolStripMenuItem.Click += new System.EventHandler(this.版本不兼容ToolStripMenuItem_Click);
+            // 
+            // 不发送任何消息ToolStripMenuItem
+            // 
+            this.不发送任何消息ToolStripMenuItem.Name = "不发送任何消息ToolStripMenuItem";
+            this.不发送任何消息ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.不发送任何消息ToolStripMenuItem.Text = "不发送任何消息";
+            this.不发送任何消息ToolStripMenuItem.Click += new System.EventHandler(this.不发送任何消息ToolStripMenuItem_Click);
+            // 
+            // soM位置未知ToolStripMenuItem
+            // 
+            this.soM位置未知ToolStripMenuItem.Name = "soM位置未知ToolStripMenuItem";
+            this.soM位置未知ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.soM位置未知ToolStripMenuItem.Text = "SoM位置未知";
+            this.soM位置未知ToolStripMenuItem.Click += new System.EventHandler(this.soM位置未知ToolStripMenuItem_Click);
+            // 
+            // soM位置无效ToolStripMenuItem
+            // 
+            this.soM位置无效ToolStripMenuItem.Name = "soM位置无效ToolStripMenuItem";
+            this.soM位置无效ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.soM位置无效ToolStripMenuItem.Text = "SoM位置无效";
+            this.soM位置无效ToolStripMenuItem.Click += new System.EventHandler(this.soM位置无效ToolStripMenuItem_Click);
             // 
             // 发送消息ToolStripMenuItem
             // 
@@ -1208,16 +1248,12 @@
             this.tbTextInfo.Size = new System.Drawing.Size(273, 103);
             this.tbTextInfo.TabIndex = 17;
             // 
-            // rbSN
+            // 不执行等级转换ToolStripMenuItem
             // 
-            this.rbSN.AutoSize = true;
-            this.rbSN.Location = new System.Drawing.Point(189, 20);
-            this.rbSN.Name = "rbSN";
-            this.rbSN.Size = new System.Drawing.Size(35, 16);
-            this.rbSN.TabIndex = 0;
-            this.rbSN.Text = "SN";
-            this.rbSN.UseVisualStyleBackColor = true;
-            this.rbSN.CheckedChanged += new System.EventHandler(this.rbWorkMode_CheckedChanged);
+            this.不执行等级转换ToolStripMenuItem.Name = "不执行等级转换ToolStripMenuItem";
+            this.不执行等级转换ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.不执行等级转换ToolStripMenuItem.Text = "不执行等级转换";
+            this.不执行等级转换ToolStripMenuItem.Click += new System.EventHandler(this.不执行等级转换ToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1237,6 +1273,7 @@
             this.Controls.Add(this.gbDriverConsoler);
             this.Name = "MainForm";
             this.Text = "Train";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.gbDriverConsoler.ResumeLayout(false);
             this.gbWorkMode.ResumeLayout(false);
@@ -1378,6 +1415,10 @@
         private System.Windows.Forms.RadioButton rbUp;
         private System.Windows.Forms.TextBox tbTextInfo;
         private System.Windows.Forms.RadioButton rbSN;
+        private System.Windows.Forms.ToolStripMenuItem 不发送任何消息ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem soM位置未知ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem soM位置无效ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 不执行等级转换ToolStripMenuItem;
     }
 }
 

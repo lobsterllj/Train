@@ -42,7 +42,7 @@ namespace Train.Packets
             Q_SLEEPSESSION = bitArray[pos++];           
         }
 
-        public double GetDrbctr()
+        public double GetDTr()
         {
             return D_RBCTR * GetScale(Q_SCALE);
         }

@@ -27,7 +27,7 @@ namespace Train.Messages
             BitArrayLEN += (bit01 == null ? 0 : bit01.Length) + (bit == null ? 0 : bit.Length);
             BitArray bitArray = new BitArray(BitArrayLEN);
 
-            Q_STATUS = 1; //设置SoM位置报告状态为1
+            Q_STATUS = (int) FaultInjection.QStatus; // 设置SoM位置报告状态
             NID_MESSAGE = MESSAGEID;
             L_MESSAGE = BitArrayLEN / 8 + (BitArrayLEN % 8 == 0 ? 0 : 1);
             int[] intArray = new int[] { 8, 10, 32, 24, 2 };

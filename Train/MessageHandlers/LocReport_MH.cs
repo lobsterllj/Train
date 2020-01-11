@@ -15,6 +15,7 @@ namespace Train.MessageHandlers
     {
         public Packet058 p58;
         int timer = 0;
+        int lastLrbgId = 0;
         Thread thread = null;
 
         public LocReport_MH(MessageHandler mh):base(mh)
@@ -25,7 +26,6 @@ namespace Train.MessageHandlers
         }
         public override bool Solve(AbstractRecvMessage arm)
         {
-
 
             return false;
         }
@@ -38,21 +38,35 @@ namespace Train.MessageHandlers
                 //列车还未收到p58包时，不需要周期判断发送位置报告
                 if (p58 == null)
                 {
+                    timer = 0;
                     Thread.Sleep(100);
                     continue;
                 }
                 //目前先只考虑T_CYCLOC参数
-                //基于M_LOC的判断后续再添加
-                if (timer >= p58.GetTcycLoc())
+                if (timer/10 >= p58.GetTcycLoc())
                 {
-                    Message136 m136 = new Message136();
-                    m136.SetPacket0or1(Trains.TrainDynamics.GetPacket0());
-                    SendMsg(m136);
+                    SendM136();
                     timer = 0;//定时器清零
                 }
-                Thread.Sleep(1000);
+                //基于M_LOC的判断
+                if (p58.GetMloc() == _M_LOC.EVERYBG)
+                {
+                    if(Trains.TrainDynamics.GetCurrentLRBG().Nid_lrbg != lastLrbgId)
+                    {
+                        SendM136();
+                        lastLrbgId = Trains.TrainDynamics.GetCurrentLRBG().Nid_lrbg;
+                    }
+                }
+                Thread.Sleep(100);
                 timer++;
             }
+        }
+
+        private void SendM136()
+        {
+            Message136 m136 = new Message136();
+            m136.SetPacket0or1(Trains.TrainDynamics.GetPacket0());
+            SendMsg(m136);
         }
 
     }
